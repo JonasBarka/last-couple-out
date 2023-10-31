@@ -5,3 +5,15 @@
 <h1>Welcome to Last Couple Out!</h1>
 
 Lorem ipsum.
+
+<p>
+    <RadzenButton Click="@ButtonClicked" Text="@text"></RadzenButton>
+    @code {
+        string text = "Hi";
+
+        void ButtonClicked()
+        {
+            text = "Radzen!";
+        }
+    }
+</p>
