@@ -13,42 +13,6 @@
       "url": "css\/bootstrap\/bootstrap.min.css.map"
     },
     {
-      "hash": "sha256-+Q44zfEaCMmXduni5Td+IgCbk8sSUQwES2nWs+KKQz0=",
-      "url": "css\/open-iconic\/FONT-LICENSE"
-    },
-    {
-      "hash": "sha256-BJ\/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
-      "url": "css\/open-iconic\/font\/css\/open-iconic-bootstrap.min.css"
-    },
-    {
-      "hash": "sha256-OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh\/chSkSvQpc=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.eot"
-    },
-    {
-      "hash": "sha256-sDUtuZAEzWZyv\/U1xl\/9D3ehyU69JE+FvAcu5HQ+\/a0=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.otf"
-    },
-    {
-      "hash": "sha256-oUpLdS+SoLJFwf4bzA3iKD7TCm66oLkTpAQlVJ2s1wc=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.svg"
-    },
-    {
-      "hash": "sha256-p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.ttf"
-    },
-    {
-      "hash": "sha256-cZPqVlRJfSNW0KaQ4+UPOXZ\/v\/QzXlejRDwUNdZIofI=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.woff"
-    },
-    {
-      "hash": "sha256-s\/Is6Ey6jfNAEfXUIOyHrXXX+RcA8hzchYnuOIWUMl4=",
-      "url": "css\/open-iconic\/ICON-LICENSE"
-    },
-    {
-      "hash": "sha256-f7rXj2KSx8rOrKHjkkyN+tLJV5mfHEDVLGIZvcj\/hgg=",
-      "url": "css\/open-iconic\/README.md"
-    },
-    {
       "hash": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
       "url": "favicon.png"
     },
@@ -97,11 +61,11 @@
       "url": "_framework\/icudt.dat.br"
     },
     {
-      "hash": "sha256-ph47TH8+POlItpvE\/RVfKEZmc620gKgWVmAK54OWsfg=",
+      "hash": "sha256-DBW\/LXd5FHQAgLXu0Xq+TEmDH9PsIxQZD\/3gKyQMqj8=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
-      "hash": "sha256-lHgwd6PO66rzfmxPooBOpHW\/b5oERjdt5geS5flqPl0=",
+      "hash": "sha256-K9RYjLYP3F5EnS0yHeB+qkrUzfDNL46T\/1GZomix20E=",
       "url": "_framework\/LastCoupleOut.dll.br"
     },
     {
@@ -337,7 +301,7 @@
       "url": "_framework\/dotnet.wasm.br"
     },
     {
-      "hash": "sha256-gy6vq4Dd1jvg1PyQbuhOt8rLhabVu5jpNRwGToeeKV8=",
+      "hash": "sha256-VbFW9vnFAk2rQ6OqA3nQME0iDJTZ0TSwyV5SnsLftwU=",
       "url": "LastCoupleOut.styles.css"
     },
     {
@@ -481,5 +445,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "dWspO2OQ"
+  "version": "TRvY9Xfi"
 };
