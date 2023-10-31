@@ -1,7 +1,7 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-10KEeWxsgry5D9LUZc0K86lpIg9RcWdyyBB5sXq6Ypk=",
+      "hash": "sha256-VDqQDUuig3TacpnH6SFNKrSQ9hTbdhN6R676B0vtAyk=",
       "url": "css\/app.css"
     },
     {
@@ -445,5 +445,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "TRvY9Xfi"
+  "version": "idrYrkYJ"
 };
