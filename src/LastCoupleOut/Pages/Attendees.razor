@@ -1,0 +1,163 @@
+﻿@page "/attendees"
+
+<PageTitle>Attendees</PageTitle>
+
+<h1>Attendees</h1>
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col">
+            <RadzenDataGrid @ref="attendeesGrid" Data="@attendees" TItem="Attendee" AllowSorting="true">
+                <Columns>
+                    <RadzenDataGridColumn TItem="Attendee" Property="Id" Title="Id" Frozen="true" Width="16px" />
+                    <RadzenDataGridColumn TItem="Attendee" Property="FirstName" Title="First Name" Width="60px" />
+                    <RadzenDataGridColumn TItem="Attendee" Property="LastName" Title="Last Name" Width="60px" />
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 offset-lg-1">
+            <RadzenTemplateForm TItem="Attendee" Data=@attendeeToCreate Submit=@OnSubmitCreate InvalidSubmit=@OnInvalidSubmit>
+                <RadzenFieldset Text="Add new attendee">
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <RadzenLabel Text="First Name" />
+                            <small style="display: block">(2-30 characters)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@attendeeToCreate.FirstName class="w-100" />
+                            <RadzenLengthValidator Component="FirstName" Min="2" Text="First name should be at least 2 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="FirstName" Max="30" Text="First name should be at most 30 characters" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <RadzenLabel Text="Last Name" />
+                            <small style="display: block">(2-30 characters)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@attendeeToCreate.LastName class="w-100" />
+                            <RadzenLengthValidator Component="LastName" Min="2" Text="Last name should be at least 2 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="LastName" Max="30" Text="Last name should be at most 30 characters" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Create"></RadzenButton>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 offset-lg-1">
+            <RadzenTemplateForm TItem="Attendee" Data=@attendeeToUpdate Submit=@OnSubmitUpdate InvalidSubmit=@OnInvalidSubmit>
+                <RadzenFieldset Text="Update attendee name">
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <RadzenLabel Text="Id" />
+                            <small style="display: block">(1-100)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Id" @bind-Value=@attendeeToUpdate.Id class="w-100" />
+                            <RadzenNumericRangeValidator Component="Id" Min="1" Max="100" Text="Id should be between 1 and 100" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <RadzenLabel Text="First Name" />
+                            <small style="display: block">(2-30 characters)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@attendeeToUpdate.FirstName class="w-100" />
+                            <RadzenLengthValidator Component="FirstName" Min="2" Text="First name should be at least 2 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="FirstName" Max="30" Text="First name should be at most 30 characters" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <RadzenLabel Text="Last Name" />
+                            <small style="display: block">(2-30 characters)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@attendeeToUpdate.LastName class="w-100" />
+                            <RadzenLengthValidator Component="LastName" Min="2" Text="Last name should be at least 2 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="LastName" Max="30" Text="Last name should be at most 30 characters" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Update"></RadzenButton>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    class Attendee
+    {
+        public int? Id { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+
+        public Attendee()
+        {
+        }
+
+        public Attendee(int id, string firstName, string lastName)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+
+
+    }
+
+    Attendee attendeeToCreate = new Attendee();
+    Attendee attendeeToUpdate = new Attendee();
+
+    RadzenDataGrid<Attendee> attendeesGrid;
+
+    List<Attendee> attendees = new List<Attendee>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        attendees.Add(new(1, "Adam", "West"));
+        attendees.Add(new(2, "Dirk", "Redding"));
+        attendees.Add(new(3, "Dylan", "Oban"));
+    }
+
+    async Task OnSubmitCreate(Attendee attendee)
+    {
+        attendee.Id = attendees.Count + 1;
+        attendees.Add(new(attendees.Count + 1, attendee.FirstName, attendee.LastName));
+
+        await attendeesGrid.Reload();
+
+        attendee.Id = null;
+        attendee.FirstName = "";
+        attendee.LastName = "";
+    }
+
+    async Task OnSubmitUpdate(Attendee attendee)
+    {
+        var attendeeToUpdate = attendees.First(x => x.Id == attendee.Id);
+        attendeeToUpdate.FirstName = attendee.FirstName;
+        attendeeToUpdate.LastName = attendee.LastName;
+
+        await attendeesGrid.Reload();
+        attendeeToUpdate = null;
+
+        attendee.Id = null;
+        attendee.FirstName = "";
+        attendee.LastName = "";
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+    }
+}
