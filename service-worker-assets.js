@@ -25,7 +25,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-1EgeEb+o2mqEckE2+PA6EpiCFuum943Sk3iuKDQzEDo=",
+      "hash": "sha256-yZKWUKfDYo2uvrZ50DDtKHufrsfagAK0i93ebw9slSM=",
       "url": "index.html"
     },
     {
@@ -61,11 +61,11 @@
       "url": "_framework\/icudt.dat.br"
     },
     {
-      "hash": "sha256-DBW\/LXd5FHQAgLXu0Xq+TEmDH9PsIxQZD\/3gKyQMqj8=",
+      "hash": "sha256-XNAMJYJ3Mbyo1FsQcFMVMfWtUXtNHDtvSkwbTIiQU7I=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
-      "hash": "sha256-K9RYjLYP3F5EnS0yHeB+qkrUzfDNL46T\/1GZomix20E=",
+      "hash": "sha256-f4wdI8yYqWsblneXcds2\/PbUNjPtfKzc6U82APoVqxc=",
       "url": "_framework\/LastCoupleOut.dll.br"
     },
     {
@@ -445,5 +445,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "idrYrkYJ"
+  "version": "Ok4grdG1"
 };
