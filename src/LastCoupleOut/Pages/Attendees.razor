@@ -1,5 +1,9 @@
 ﻿@page "/attendees"
 
+@using Infrastructure.Dto
+@using Infrastructure.Repository
+@inject IAttendeeRepository _attendeeRepository
+
 <PageTitle>Attendees</PageTitle>
 
 <h1>Attendees</h1>
@@ -7,11 +11,11 @@
 <div class="container my-4">
     <div class="row">
         <div class="col">
-            <RadzenDataGrid @ref="attendeesGrid" Data="@attendees" TItem="Attendee" AllowSorting="true">
+            <RadzenDataGrid @ref="attendeesGrid" Data="@attendees" TItem="AttendeeDto" AllowSorting="true">
                 <Columns>
-                    <RadzenDataGridColumn TItem="Attendee" Property="Id" Title="Id" Frozen="true" Width="16px" />
-                    <RadzenDataGridColumn TItem="Attendee" Property="FirstName" Title="First Name" Width="60px" />
-                    <RadzenDataGridColumn TItem="Attendee" Property="LastName" Title="Last Name" Width="60px" />
+                    <RadzenDataGridColumn TItem="AttendeeDto" Property="Id" Title="Id" Frozen="true" Width="16px" />
+                    <RadzenDataGridColumn TItem="AttendeeDto" Property="FirstName" Title="First Name" Width="60px" />
+                    <RadzenDataGridColumn TItem="AttendeeDto" Property="LastName" Title="Last Name" Width="60px" />
                 </Columns>
             </RadzenDataGrid>
         </div>
@@ -19,7 +23,7 @@
 
     <div class="row">
         <div class="col-lg-6 offset-lg-1">
-            <RadzenTemplateForm TItem="Attendee" Data=@attendeeToCreate Submit=@OnSubmitCreate InvalidSubmit=@OnInvalidSubmit>
+            <RadzenTemplateForm TItem="AttendeeDto" Data=@attendeeToCreate Submit=@OnSubmitCreate InvalidSubmit=@OnInvalidSubmit>
                 <RadzenFieldset Text="Add new attendee">
                     <div class="row mb-5">
                         <div class="col-md-4">
@@ -51,7 +55,7 @@
 
     <div class="row">
         <div class="col-lg-6 offset-lg-1">
-            <RadzenTemplateForm TItem="Attendee" Data=@attendeeToUpdate Submit=@OnSubmitUpdate InvalidSubmit=@OnInvalidSubmit>
+            <RadzenTemplateForm TItem="AttendeeDto" Data=@attendeeToUpdate Submit=@OnSubmitUpdate InvalidSubmit=@OnInvalidSubmit>
                 <RadzenFieldset Text="Update attendee name">
                     <div class="row mb-5">
                         <div class="col-md-4">
@@ -93,68 +97,45 @@
 </div>
 
 @code {
-    class Attendee
-    {
-        public int? Id { get; set; }
-        public string FirstName { get; set; } = "";
-        public string LastName { get; set; } = "";
 
-        public Attendee()
-        {
-        }
+    AttendeeDto attendeeToCreate = new(); // Only used to temporarily hold form content.
+    AttendeeDto attendeeToUpdate = new(); // Only used to temporarily hold form content.
 
-        public Attendee(int id, string firstName, string lastName)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-        }
+    RadzenDataGrid<AttendeeDto> attendeesGrid = new();
 
-
-
-    }
-
-    Attendee attendeeToCreate = new Attendee();
-    Attendee attendeeToUpdate = new Attendee();
-
-    RadzenDataGrid<Attendee> attendeesGrid;
-
-    List<Attendee> attendees = new List<Attendee>();
+    List<AttendeeDto> attendees = new();
 
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        attendees.Add(new(1, "Adam", "West"));
-        attendees.Add(new(2, "Dirk", "Redding"));
-        attendees.Add(new(3, "Dylan", "Oban"));
+        attendees = await _attendeeRepository.LoadAsync();
     }
 
-    async Task OnSubmitCreate(Attendee attendee)
+    async Task OnSubmitCreate(AttendeeDto attendee)
     {
-        attendee.Id = attendees.Count + 1;
         attendees.Add(new(attendees.Count + 1, attendee.FirstName, attendee.LastName));
 
+        await _attendeeRepository.SaveAsync(attendees);
+
         await attendeesGrid.Reload();
 
-        attendee.Id = null;
-        attendee.FirstName = "";
-        attendee.LastName = "";
+        attendee.Reset();
     }
 
-    async Task OnSubmitUpdate(Attendee attendee)
+    async Task OnSubmitUpdate(AttendeeDto attendee)
     {
-        var attendeeToUpdate = attendees.First(x => x.Id == attendee.Id);
-        attendeeToUpdate.FirstName = attendee.FirstName;
-        attendeeToUpdate.LastName = attendee.LastName;
+        var updatedAttendee = attendees.First(x => x.Id == attendee.Id);
+
+        updatedAttendee.FirstName = attendee.FirstName;
+        updatedAttendee.LastName = attendee.LastName;
+
+        await _attendeeRepository.SaveAsync(attendees);
 
         await attendeesGrid.Reload();
-        attendeeToUpdate = null;
 
-        attendee.Id = null;
-        attendee.FirstName = "";
-        attendee.LastName = "";
+        attendee.Reset();
     }
 
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
