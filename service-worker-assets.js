@@ -33,10 +33,6 @@
       "url": "manifest.json"
     },
     {
-      "hash": "sha256-paIeuWnSzjeLGITWkk4p3rcejUsZWCJGPeOK9UhWXtg=",
-      "url": "sample-data\/weather.json"
-    },
-    {
       "hash": "sha256-rcIWTVNnYus6VWf2Z2U1g\/JzlC07Ym02cFjHtI59Xsc=",
       "url": "_framework\/blazor.webassembly.js"
     },
@@ -61,7 +57,7 @@
       "url": "_framework\/icudt_no_CJK.dat.br"
     },
     {
-      "hash": "sha256-3CCXfEHXWVRk2JDPpCpNL38bJ02+xalW9T847tySrxw=",
+      "hash": "sha256-sNTxmr9YBlBsH7C3AlWzJAqYnVbKPwZj\/EaZWZOjtw8=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
@@ -69,11 +65,11 @@
       "url": "_framework\/dotnet.native.8.0.0.1etw9dlmg6.js"
     },
     {
-      "hash": "sha256-hZGNKfeDUZnRDk8cJcq31Y\/y4UqEkS5rLKKWSI5jcLw=",
+      "hash": "sha256-DliXOx9bly4j38HxegV3fC5x\/1FLoXo2ymFdqSibnz4=",
       "url": "_framework\/dotnet.native.wasm.br"
     },
     {
-      "hash": "sha256-An81pOuYlbdx5llqBf1oMPso9kRQyZVeyc25RSxaG2k=",
+      "hash": "sha256-yZzJwvNHjxU5sZBvcWNqjlX2GGc7g\/+Ohrixte5XvFI=",
       "url": "_framework\/LastCoupleOut.wasm.br"
     },
     {
@@ -221,11 +217,7 @@
       "url": "_framework\/System.Memory.wasm.br"
     },
     {
-      "hash": "sha256-nAG8Vov4c4DBhHsBV67J\/K+uh1V31cjuix0Kzm7gtW8=",
-      "url": "_framework\/System.Net.Http.Json.wasm.br"
-    },
-    {
-      "hash": "sha256-RXaLXu6mW7qk8z2T0RjNqF0bXgpIdxumT3G9nHiRRVA=",
+      "hash": "sha256-Rz0cccjPn+Bk\/VdM13+OP5LaasdQfLTEvEUzRyufWTU=",
       "url": "_framework\/System.Net.Http.wasm.br"
     },
     {
@@ -237,7 +229,7 @@
       "url": "_framework\/System.ObjectModel.wasm.br"
     },
     {
-      "hash": "sha256-7dc43BVXrJkWu9B0YbOfu6smCUXgKcELqQ+n87CpjZ4=",
+      "hash": "sha256-vteLPRxYchhLpyK+zUOgAVJUNwhfTIQx9IZl4FU+ZzM=",
       "url": "_framework\/System.Private.CoreLib.wasm.br"
     },
     {
@@ -281,7 +273,7 @@
       "url": "_framework\/System.Text.Encodings.Web.wasm.br"
     },
     {
-      "hash": "sha256-P9f3GvFg5C\/eQAXgEDun6QHcdj2Jb5Vizu3E\/QyqhO4=",
+      "hash": "sha256-EjaIlgxs\/OlFf2TfGs76uAAQMj9vkO3KDnFCtFU73QQ=",
       "url": "_framework\/System.Text.Json.wasm.br"
     },
     {
@@ -493,5 +485,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "pDszegwG"
+  "version": "fn\/ARqRa"
 };
