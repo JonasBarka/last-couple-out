@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace Infrastructure.Dto;
+﻿namespace Infrastructure.Dto;
 
 public record AttendeeDto
 {
