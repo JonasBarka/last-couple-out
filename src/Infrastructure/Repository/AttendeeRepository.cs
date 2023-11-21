@@ -13,16 +13,16 @@ public interface IAttendeeRepository
 
 public class AttendeeRepository(ILocalStorageService _localStorageService) : IAttendeeRepository
 {
-    private const string AttendeeIdentifier = "attendee";
+    private const string AttendeesKey = "attendees";
 
     public async Task<List<AttendeeDto>> LoadAsync()
     {
-        return await _localStorageService.GetItemAsync<List<AttendeeDto>>(AttendeeIdentifier)
+        return await _localStorageService.GetItemAsync<List<AttendeeDto>>(AttendeesKey)
                      ?? [];
     }
 
     public async Task SaveAsync(IEnumerable<AttendeeDto> attendeeDto)
     {
-        await _localStorageService.SetItemAsync(AttendeeIdentifier, attendeeDto);
+        await _localStorageService.SetItemAsync(AttendeesKey, attendeeDto);
     }
 }
