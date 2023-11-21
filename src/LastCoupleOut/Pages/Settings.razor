@@ -1,0 +1,31 @@
+﻿@page "/settings"
+@using Infrastructure.Repository
+@inject IAttendeeRepository _attendeeRepository
+@inject DialogService _dialogService
+
+<PageTitle>Last Couple Out</PageTitle>
+
+<br />
+
+<h1>Settings</h1>
+
+<br />
+<br />
+
+
+<div class="rz-p-12 rz-text-align-left">
+    <RadzenButton Text="Delete all attendees" ButtonStyle="ButtonStyle.Secondary" Click=@DeleteAllAttendees />
+</div>
+
+@code
+{
+    async Task DeleteAllAttendees()
+    {
+        var deleteAll = await _dialogService.Alert("Are you sure you want to delete all attendees?", "Delete all attendees", new AlertOptions() { OkButtonText = "Yes" });
+
+        if (deleteAll == true)
+        {
+            await _attendeeRepository.ClearAsync();
+        }
+    }
+}

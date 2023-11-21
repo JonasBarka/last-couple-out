@@ -8,6 +8,8 @@ public interface IAttendeeRepository
     Task<List<AttendeeDto>> LoadAsync();
 
     Task SaveAsync(IEnumerable<AttendeeDto> attendeeDto);
+
+    Task ClearAsync();
 }
 
 
@@ -24,5 +26,10 @@ public class AttendeeRepository(ILocalStorageService _localStorageService) : IAt
     public async Task SaveAsync(IEnumerable<AttendeeDto> attendeeDto)
     {
         await _localStorageService.SetItemAsync(AttendeesKey, attendeeDto);
+    }
+
+    public async Task ClearAsync()
+    {
+        await _localStorageService.RemoveItemAsync(AttendeesKey);
     }
 }
