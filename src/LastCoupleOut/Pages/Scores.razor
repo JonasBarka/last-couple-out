@@ -1,0 +1,175 @@
+﻿@page "/scores"
+
+@using Infrastructure.Dto
+@using Infrastructure.Repository
+@inject IAttendeeRepository _attendeeRepository
+
+<br />
+
+<PageTitle>Last Couple Out</PageTitle>
+
+<h1>Scores</h1>
+
+<br />
+
+<div class="container-md">
+    <div class="row">
+        <div class="col-xl-6">
+            <RadzenTemplateForm TItem="ScoreDto" Data=@scoreToCreate Submit=@OnSubmitCreate>
+                <RadzenFieldset Text="Add new score">
+                    <div class="row mb-5">
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Scorer ID" />
+                            <small style="display: block">@IdValidationLabel</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Scorer ID" @bind-Value=@scoreToCreate.ScorerId class="w-100" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Scorer ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                        </div>
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Scored ID" />
+                            <small style="display: block">@IdValidationLabel</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Scored ID" @bind-Value=@scoreToCreate.ScoredId class="w-100" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Scorer ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Friendship" />
+                            <small style="display: block">(1-5)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Friendship" @bind-Value=@scoreToCreate.Friendship class="w-100" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Friendship" Min="1" Max="5" Text="Must be 1-5" Style="position: absolute" />
+                        </div>
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Attraction" />
+                            <small style="display: block">(1-5)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Attraction" @bind-Value=@scoreToCreate.Attraction class="w-100" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Attraction" Min="1" Max="5" Text="Must be 1-5" Style="position: absolute" />
+                        </div>
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Parenting" />
+                            <small style="display: block">(1-5)</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Parenting" @bind-Value=@scoreToCreate.Parenting class="w-100" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Parenting" Min="1" Max="5" Text="Must be 1-5" Style="position: absolute" />
+                        </div>
+                    </div>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Add score"></RadzenButton>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+        <div class="col-xl-6">
+            <RadzenDataGrid @ref="scoresGrid" Data="@scores" TItem="ScoreDto" AllowSorting="true">
+                <Columns>
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="Id" Title="Id" Frozen="true" Width="30px" />
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="ScorerId" Title="Scorer" Width="60px" />
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="ScoredId" Title="Scored" Width="60px" />
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="Friendship" Title="Friendship" Width="80px" />
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="Attraction" Title="Attraction" Width="80px" />
+                    <RadzenDataGridColumn TItem="ScoreDto" Property="Parenting" Title="Parenting" Width="80px" />
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+        <div class="col-xl-6">
+            <RadzenTemplateForm TItem="IdContainer" Data=@scoreToDelete Submit=@OnSubmitDelete>
+                <RadzenFieldset Text="Delete score">
+                    <div class="row mb-5">
+                        <div class="col-md-2">
+                            <RadzenLabel Text="Score ID" />
+                            <small style="display: block">@IdValidationLabel</small>
+                        </div>
+                        <div class="col">
+                            <RadzenNumeric style="display: block" Name="Score ID" @bind-Value=@scoreToDelete.Id class="w-80" ShowUpDown="false" />
+                            <RadzenNumericRangeValidator Component="Score ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                        </div>
+                    </div>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Delete score"></RadzenButton>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    ScoreDto scoreToCreate = new(); // Used to temporarily hold form content.
+    IdContainer scoreToDelete = new(); // Used to temporarily hold form content.
+
+    RadzenDataGrid<ScoreDto> scoresGrid = new();
+
+    List<ScoreDto> scores = new();
+
+    int maxAttendeeId;
+
+    string IdValidationLabel => "(1-" + maxAttendeeId + ")";
+    string IdValidationMessage => "Must be 1-" + maxAttendeeId;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        scores.Add(new ScoreDto(1, 3, 3, 4, 3, 5));
+        scores.Add(new ScoreDto(2, 4, 5, 2, 5, 1));
+
+        var attendees = await _attendeeRepository.LoadAsync();
+        maxAttendeeId = attendees.Count();
+
+        //couples = await _scoreRepository.LoadAsync();
+    }
+
+    async Task OnSubmitCreate(ScoreDto score)
+    {
+        int? id = scores.Last().Id + 1;
+
+        scores.Add(new(id, score.ScorerId, score.ScoredId, score.Friendship, score.Attraction, score.Parenting));
+
+        //await _attendeeRepository.SaveAsync(couples);
+
+        await scoresGrid.Reload();
+
+        score.Reset();
+    }
+
+    async Task OnSubmitDelete(IdContainer container)
+    {
+        var score = scores.FirstOrDefault(x => x.Id == container.Id);
+
+        if (score != null)
+        {
+            scores.Remove(score);
+        }
+
+        //await _scoreRepository.SaveAsync(couples);
+
+        await scoresGrid.Reload();
+
+        container.Id = null;
+    }
+
+    public class IdContainer
+    {
+        public int? Id { get; set; }
+    }
+}
