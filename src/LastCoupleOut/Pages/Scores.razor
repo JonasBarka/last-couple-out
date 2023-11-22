@@ -1,18 +1,14 @@
 ﻿@page "/scores"
-
 @using Infrastructure.Dto
 @using Infrastructure.Repository
 @inject IAttendeeRepository _attendeeRepository
 
-<br />
-
 <PageTitle>Last Couple Out</PageTitle>
 
-<h1>Scores</h1>
-
-<br />
-
 <div class="container-md">
+    <br />
+    <h1>Scores</h1>
+    <br />
     <div class="row">
         <div class="col-xxl-6 col-xl-8">
             <RadzenTemplateForm TItem="ScoreDto" Data=@scoreToCreate Submit=@OnSubmitCreate>
