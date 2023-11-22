@@ -14,7 +14,7 @@
 
 <div class="container-md">
     <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xxl-6 col-xl-8">
             <RadzenTemplateForm TItem="ScoreDto" Data=@scoreToCreate Submit=@OnSubmitCreate>
                 <RadzenFieldset Text="Add new score">
                     <div class="row mb-5">
@@ -73,7 +73,7 @@
     <br />
 
     <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xxl-6 col-xl-8">
             <RadzenDataGrid @ref="scoresGrid" Data="@scores" TItem="ScoreDto" AllowSorting="true">
                 <Columns>
                     <RadzenDataGridColumn TItem="ScoreDto" Property="Id" Title="Id" Frozen="true" Width="30px" />
@@ -91,7 +91,7 @@
     <br />
 
     <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xxl-6 col-xl-8">
             <RadzenTemplateForm TItem="IdContainer" Data=@scoreToDelete Submit=@OnSubmitDelete>
                 <RadzenFieldset Text="Delete score">
                     <div class="row mb-5">
