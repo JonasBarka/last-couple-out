@@ -1,6 +1,7 @@
 ﻿@page "/scores"
 @using Infrastructure.Dto
 @using Infrastructure.Repository
+@inject IScoreRepository _scoreRepository
 @inject IAttendeeRepository _attendeeRepository
 
 <PageTitle>Last Couple Out</PageTitle>
@@ -132,22 +133,21 @@
     {
         await base.OnInitializedAsync();
 
-        scores.Add(new ScoreDto(1, 3, 3, 4, 3, 5));
-        scores.Add(new ScoreDto(2, 4, 5, 2, 5, 1));
-
         var attendees = await _attendeeRepository.LoadAsync();
         maxAttendeeId = attendees.Count();
 
-        //couples = await _scoreRepository.LoadAsync();
+        scores = await _scoreRepository.LoadAsync();
     }
 
     async Task OnSubmitCreate(ScoreDto score)
     {
-        int? id = scores.Last().Id + 1;
+
+
+        int? id = (scores.LastOrDefault()?.Id ?? 0) + 1;
 
         scores.Add(new(id, score.ScorerId, score.ScoredId, score.Friendship, score.Attraction, score.Parenting));
 
-        //await _attendeeRepository.SaveAsync(couples);
+        await _scoreRepository.SaveAsync(scores);
 
         await scoresGrid.Reload();
 
@@ -161,11 +161,9 @@
         if (score != null)
         {
             scores.Remove(score);
+            await _scoreRepository.SaveAsync(scores);
+            await scoresGrid.Reload();
         }
-
-        //await _scoreRepository.SaveAsync(couples);
-
-        await scoresGrid.Reload();
 
         container.Id = null;
     }

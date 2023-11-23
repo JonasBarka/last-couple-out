@@ -1,6 +1,7 @@
 ﻿@page "/settings"
 @using Infrastructure.Repository
 @inject IAttendeeRepository _attendeeRepository
+@inject IScoreRepository _scoreRepository
 @inject DialogService _dialogService
 
 <PageTitle>Last Couple Out</PageTitle>
@@ -9,17 +10,31 @@
     <br />
     <h1>Settings</h1>
     <br />
-    <RadzenButton Text="Delete all attendees" ButtonStyle="ButtonStyle.Secondary" Click=@DeleteAllAttendees />
+    <RadzenButton Text="Delete all scores" ButtonStyle="ButtonStyle.Secondary" Click=@DeleteScores />
+    <br />
+    <br />
+    <RadzenButton Text="Delete all attendees and scores" ButtonStyle="ButtonStyle.Secondary" Click=@DeleteAll />
 </div>
 
 @code
 {
-    async Task DeleteAllAttendees()
+    async Task DeleteScores()
     {
-        var deleteAll = await _dialogService.Alert("Are you sure you want to delete all attendees?", "Delete all attendees", new AlertOptions() { OkButtonText = "Yes" });
+        var deleteAll = await _dialogService.Alert("Are you sure you want to delete all scores?", "Delete all scores", new AlertOptions() { OkButtonText = "Yes" });
 
         if (deleteAll == true)
         {
+            await _scoreRepository.ClearAsync();
+        }
+    }
+
+    async Task DeleteAll()
+    {
+        var deleteAll = await _dialogService.Alert("Are you sure you want to delete all attendees and scores?", "Delete all attendees and scores", new AlertOptions() { OkButtonText = "Yes" });
+
+        if (deleteAll == true)
+        {
+            await _scoreRepository.ClearAsync();
             await _attendeeRepository.ClearAsync();
         }
     }

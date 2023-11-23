@@ -15,5 +15,6 @@ builder.Services.AddRadzenComponents();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<IAttendeeRepository, AttendeeRepository>();
+builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
 
 await builder.Build().RunAsync();
