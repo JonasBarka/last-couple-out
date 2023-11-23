@@ -28,7 +28,8 @@
                         </div>
                         <div class="col">
                             <RadzenNumeric style="display: block" Name="Scored ID" @bind-Value=@scoreToCreate.ScoredId class="w-100" ShowUpDown="false" />
-                            <RadzenNumericRangeValidator Component="Scorer ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                            <RadzenNumericRangeValidator Visible=@(scoreToCreate.ScorerId != scoreToCreate.ScoredId) Component="Scored ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                            <RadzenCompareValidator Value=@scoreToCreate.ScorerId Component="Scored ID" Text="The IDs must be different" Style="position: absolute" Operator=@CompareOperator.NotEqual />
                         </div>
                         <div class="col-md-2">
                         </div>
@@ -118,8 +119,13 @@
 
     int maxAttendeeId;
 
-    string IdValidationLabel => "(1-" + maxAttendeeId + ")";
-    string IdValidationMessage => "Must be 1-" + maxAttendeeId;
+    string IdValidationLabel => maxAttendeeId > 1
+                                    ?"(1-" + maxAttendeeId + ")"
+                                    :"" ;
+
+    string IdValidationMessage => maxAttendeeId > 1
+                                    ?"Must be 1-" + maxAttendeeId
+                                    :"Add attendees first";
 
 
     protected override async Task OnInitializedAsync()
