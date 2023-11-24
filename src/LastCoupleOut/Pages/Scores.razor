@@ -17,19 +17,19 @@
                     <div class="row mb-5">
                         <div class="col-md-2">
                             <RadzenLabel Text="Scorer ID" />
-                            <small style="display: block">@IdValidationLabel</small>
+                            <small style="display: block">@AttendeeIdValidationLabel</small>
                         </div>
                         <div class="col">
                             <RadzenNumeric style="display: block" Name="Scorer ID" @bind-Value=@scoreToCreate.ScorerId class="w-100" ShowUpDown="false" />
-                            <RadzenNumericRangeValidator Component="Scorer ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                            <RadzenNumericRangeValidator Component="Scorer ID" Min="1" Max=@maxAttendeeId Text=@AttendeeIdValidationMessage Style="position: absolute" />
                         </div>
                         <div class="col-md-2">
                             <RadzenLabel Text="Scored ID" />
-                            <small style="display: block">@IdValidationLabel</small>
+                            <small style="display: block">@AttendeeIdValidationLabel</small>
                         </div>
                         <div class="col">
                             <RadzenNumeric style="display: block" Name="Scored ID" @bind-Value=@scoreToCreate.ScoredId class="w-100" ShowUpDown="false" />
-                            <RadzenNumericRangeValidator Visible=@(scoreToCreate.ScorerId != scoreToCreate.ScoredId) Component="Scored ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                            <RadzenNumericRangeValidator Visible=@(scoreToCreate.ScorerId != scoreToCreate.ScoredId) Component="Scored ID" Min="1" Max=@maxAttendeeId Text=@AttendeeIdValidationMessage Style="position: absolute" />
                             <RadzenCompareValidator Value=@scoreToCreate.ScorerId Component="Scored ID" Text="The IDs must be different" Style="position: absolute" Operator=@CompareOperator.NotEqual />
                         </div>
                         <div class="col-md-2">
@@ -95,11 +95,11 @@
                     <div class="row mb-5">
                         <div class="col-md-2">
                             <RadzenLabel Text="Score ID" />
-                            <small style="display: block">@IdValidationLabel</small>
+                            <small style="display: block">@ScoreIdValidationLabel</small>
                         </div>
                         <div class="col">
                             <RadzenNumeric style="display: block" Name="Score ID" @bind-Value=@scoreToDelete.Id class="w-80" ShowUpDown="false" />
-                            <RadzenNumericRangeValidator Component="Score ID" Min="1" Max=@maxAttendeeId Text=@IdValidationMessage Style="position: absolute" />
+                            <RadzenNumericRangeValidator Component="Score ID" Min="1" Max=@maxScoreId Text=@ScoreIdValidationMessage Style="position: absolute" />
                         </div>
                     </div>
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Delete score"></RadzenButton>
@@ -120,14 +120,23 @@
 
     int maxAttendeeId;
 
-    string IdValidationLabel => maxAttendeeId > 1
-                                    ?"(1-" + maxAttendeeId + ")"
-                                    :"" ;
+    string AttendeeIdValidationLabel => maxAttendeeId > 1
+                                        ?"(1-" + maxAttendeeId + ")"
+                                        :"" ;
 
-    string IdValidationMessage => maxAttendeeId > 1
-                                    ?"Must be 1-" + maxAttendeeId
-                                    :"Add attendees first";
+    string AttendeeIdValidationMessage => maxAttendeeId > 1
+                                          ?"Must be 1-" + maxAttendeeId
+                                          :"Add attendees first";
 
+    int maxScoreId;
+
+    string ScoreIdValidationLabel => maxScoreId > 0
+                                     ? "(1-" + maxScoreId + ")"
+                                     : "";
+
+    string ScoreIdValidationMessage => maxScoreId > 0
+                                       ? "Must be 1-" + maxScoreId
+                                       : "None to delete";
 
     protected override async Task OnInitializedAsync()
     {
@@ -137,6 +146,7 @@
         maxAttendeeId = attendees.Count();
 
         scores = await _scoreRepository.LoadAsync();
+        maxScoreId = scores.Select(x => x.Id).Max() ?? 0;
     }
 
     async Task OnSubmitCreate(ScoreDto score)
