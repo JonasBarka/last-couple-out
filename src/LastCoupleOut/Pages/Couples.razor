@@ -14,7 +14,7 @@
         <div class="col-xxl-6 col-xl-8">
             <RadzenDataGrid @ref="couplesGrid" Data="@couples" TItem="CoupleDto" AllowSorting="true">
                 <Columns>
-                    <RadzenDataGridColumn TItem="CoupleDto" Property="TotalScore" Title="Score" Frozen="true" Width="30px" />
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="CoupleScore" Title="Score" Frozen="true" Width="30px" />
                     <RadzenDataGridColumn TItem="CoupleDto" Property="FirstAttendeeName" Title="First Attendee" Width="60px" />
                     <RadzenDataGridColumn TItem="CoupleDto" Property="FirstAttendeeScores" Title="Scores" Width="40px" />
                     <RadzenDataGridColumn TItem="CoupleDto" Property="SecondAttendeeName" Title="Second Attendee" Width="60px" />
@@ -39,7 +39,78 @@
         attendees = await _attendeeRepository.LoadAsync();
         scores = await _scoreRepository.LoadAsync();
 
-        couples.Add(new() { TotalScore = 45, FirstAttendeeName = "Kokko Balle", FirstAttendeeScores = "3/4/6",  SecondAttendeeName = "Pullo Synkos", SecondAttendeeScores = "4/5/5"});
-        await couplesGrid.Reload();
+
+        // Pair up scores
+
+        List<(ScoreDto First, ScoreDto Second)> scorePairs = new();
+
+        while (scores.Count >= 2)
+        {
+            var firstScore = scores.First();
+            var secondScore = scores.FirstOrDefault(x => (x.ScorerId == firstScore.ScoredId) && (x.ScoredId == firstScore.ScorerId));
+
+            if (secondScore == null)
+            {
+                scores.Remove(firstScore);
+                Console.WriteLine($"Error when pairing up scores: Score {firstScore} has no matching score by another attendee.");
+                continue;
+            }
+
+            scorePairs.Add((firstScore, secondScore));
+            scores.Remove(firstScore);
+            scores.Remove(secondScore);
+        }
+
+        if (scores.Count != 0)
+        {
+            Console.WriteLine($"Error when pairing up scores: Score {scores[0]} has no matching score by another attendee.");
+        }
+
+        // Create raw couples list, sorted by score descending
+
+        var sortedCouples = scorePairs.Select(x => new CoupleDto()
+            {
+                CoupleScore = CalculatePairScore(x.First, x.Second),
+                FirstAttendeeId = x.First.ScorerId ?? 0,
+                FirstAttendeeName = attendees.Single(y => y.Id == x.First.ScorerId).FirstName + " " + attendees.Single(y => y.Id == x.First.ScorerId).LastName,
+                FirstAttendeeScores = x.First.Friendship + "/" + x.First.Attraction + "/" + x.First.Parenting,
+                SecondAttendeeId = x.Second.ScorerId ?? 0,
+                SecondAttendeeName = attendees.Single(y => y.Id == x.Second.ScorerId).FirstName + " " + attendees.Single(y => y.Id == x.Second.ScorerId).LastName,
+                SecondAttendeeScores = x.Second.Friendship + "/" + x.Second.Attraction + "/" + x.Second.Parenting,
+            })
+            .OrderByDescending(x => x.CoupleScore)
+            .ToList();
+
+        // Remove duplicate pairs
+
+        while(sortedCouples.Count > 0)
+        {
+            var nextCouple = sortedCouples.First();
+            sortedCouples = sortedCouples.Where(x => x.FirstAttendeeId != nextCouple.FirstAttendeeId
+                                                     && x.FirstAttendeeId != nextCouple.SecondAttendeeId
+                                                     && x.SecondAttendeeId != nextCouple.FirstAttendeeId
+                                                     && x.SecondAttendeeId != nextCouple.SecondAttendeeId
+                                                     ).ToList();
+
+            couples.Add(nextCouple);
+            await couplesGrid.Reload();
+        }
+    }
+
+    private int CalculatePairScore(ScoreDto first, ScoreDto second)
+    {
+        var friendshipWeight = 1;
+        var attractionWeight = 2;
+        var parentingWeight = 2;
+
+        var friendship = ((first.Friendship ?? 0) + (second.Friendship ?? 0)) * friendshipWeight;
+        var attraction = -Math.Abs((first.Attraction ?? 0) - (second.Attraction ?? 0)) * attractionWeight;
+        var parenting = ((first.Parenting ?? 0) + (second.Parenting ?? 0)) * parentingWeight;
+
+        // Console.WriteLine("Friendship: " + friendship);
+        // Console.WriteLine("Attraction: " + attraction);
+        // Console.WriteLine("Parenting: " + parenting);
+
+        return friendship + attraction + parenting;
     }
 }
