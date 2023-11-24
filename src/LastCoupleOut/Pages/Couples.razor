@@ -1,0 +1,45 @@
+﻿@page "/couples"
+@using Infrastructure.Dto
+@using Infrastructure.Repository
+@inject IScoreRepository _scoreRepository
+@inject IAttendeeRepository _attendeeRepository
+
+<PageTitle>Last Couple Out</PageTitle>
+
+<div class="container-md">
+    <br />
+    <h1>Couples</h1>
+    <br />
+    <div class="row">
+        <div class="col-xxl-6 col-xl-8">
+            <RadzenDataGrid @ref="couplesGrid" Data="@couples" TItem="CoupleDto" AllowSorting="true">
+                <Columns>
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="TotalScore" Title="Score" Frozen="true" Width="30px" />
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="FirstAttendeeName" Title="First Attendee" Width="60px" />
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="FirstAttendeeScores" Title="Scores" Width="40px" />
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="SecondAttendeeName" Title="Second Attendee" Width="60px" />
+                    <RadzenDataGridColumn TItem="CoupleDto" Property="SecondAttendeeScores" Title="Scores" Width="40px" />
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</div>
+
+@code {
+    RadzenDataGrid<CoupleDto> couplesGrid = new();
+
+    List<AttendeeDto> attendees = new();
+    List<ScoreDto> scores = new();
+    List<CoupleDto> couples = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        attendees = await _attendeeRepository.LoadAsync();
+        scores = await _scoreRepository.LoadAsync();
+
+        couples.Add(new() { TotalScore = 45, FirstAttendeeName = "Kokko Balle", FirstAttendeeScores = "3/4/6",  SecondAttendeeName = "Pullo Synkos", SecondAttendeeScores = "4/5/5"});
+        await couplesGrid.Reload();
+    }
+}
