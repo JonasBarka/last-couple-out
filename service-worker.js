@@ -40,4 +40,4 @@ async function onFetch(event) {
         })
     )
 }
-/* Manifest version: CrHgOdDP */
+/* Manifest version: wEDOWwES */
