@@ -17,23 +17,23 @@
                     <div class="row mb-5">
                         <div class="col-md-4">
                             <RadzenLabel Text="First Name" />
-                            <small style="display: block">(2-30 characters)</small>
+                            <small style="display: block">(2-20 characters)</small>
                         </div>
                         <div class="col">
                             <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@attendeeToCreate.FirstName class="w-100" />
                             <RadzenLengthValidator Component="FirstName" Min="2" Text="First name should be at least 2 characters" Style="position: absolute" />
-                            <RadzenLengthValidator Component="FirstName" Max="30" Text="First name should be at most 30 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="FirstName" Max="20" Text="First name should be at most 20 characters" Style="position: absolute" />
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-4">
                             <RadzenLabel Text="Last Name" />
-                            <small style="display: block">(2-30 characters)</small>
+                            <small style="display: block">(2-20 characters)</small>
                         </div>
                         <div class="col">
                             <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@attendeeToCreate.LastName class="w-100" />
                             <RadzenLengthValidator Component="LastName" Min="2" Text="Last name should be at least 2 characters" Style="position: absolute" />
-                            <RadzenLengthValidator Component="LastName" Max="30" Text="Last name should be at most 30 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="LastName" Max="20" Text="Last name should be at most 20 characters" Style="position: absolute" />
                         </div>
                     </div>
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Add attendee"></RadzenButton>
@@ -67,33 +67,33 @@
                     <div class="row mb-5">
                         <div class="col-md-4">
                             <RadzenLabel Text="Id" />
-                            <small style="display: block">(1-100)</small>
+                            <small style="display: block">@AttendeeIdValidationLabel</small>
                         </div>
                         <div class="col">
                             <RadzenNumeric style="display: block" Name="Id" @bind-Value=@attendeeToUpdate.Id class="w-100" ShowUpDown="false" />
-                            <RadzenNumericRangeValidator Component="Id" Min="1" Max="100" Text="Id should be between 1 and 100" Style="position: absolute" />
+                            <RadzenNumericRangeValidator Component="Id" Min="1" Max=@attendees.Count Text=@AttendeeIdValidationMessage Style="position: absolute" />
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-4">
                             <RadzenLabel Text="First Name" />
-                            <small style="display: block">(2-30 characters)</small>
+                            <small style="display: block">(2-20 characters)</small>
                         </div>
                         <div class="col">
                             <RadzenTextBox style="display: block" Name="FirstName" @bind-Value=@attendeeToUpdate.FirstName class="w-100" />
                             <RadzenLengthValidator Component="FirstName" Min="2" Text="First name should be at least 2 characters" Style="position: absolute" />
-                            <RadzenLengthValidator Component="FirstName" Max="30" Text="First name should be at most 30 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="FirstName" Max="20" Text="First name should be at most 20 characters" Style="position: absolute" />
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-4">
                             <RadzenLabel Text="Last Name" />
-                            <small style="display: block">(2-30 characters)</small>
+                            <small style="display: block">(2-20 characters)</small>
                         </div>
                         <div class="col">
                             <RadzenTextBox style="display: block" Name="LastName" @bind-Value=@attendeeToUpdate.LastName class="w-100" />
                             <RadzenLengthValidator Component="LastName" Min="2" Text="Last name should be at least 2 characters" Style="position: absolute" />
-                            <RadzenLengthValidator Component="LastName" Max="30" Text="Last name should be at most 30 characters" Style="position: absolute" />
+                            <RadzenLengthValidator Component="LastName" Max="20" Text="Last name should be at most 20 characters" Style="position: absolute" />
                         </div>
                     </div>
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Update attendee"></RadzenButton>
@@ -112,6 +112,13 @@
 
     List<AttendeeDto> attendees = new();
 
+    string AttendeeIdValidationLabel => attendees.Count > 0
+                                        ? "(1-" + attendees.Count + ")"
+                                        : "";
+
+    string AttendeeIdValidationMessage => attendees.Count > 0
+                                          ? "Must be 1-" + attendees.Count
+                                          : "None to update";
 
     protected override async Task OnInitializedAsync()
     {
