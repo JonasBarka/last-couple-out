@@ -70,7 +70,7 @@
                             <small style="display: block">(1-100)</small>
                         </div>
                         <div class="col">
-                            <RadzenNumeric style="display: block" Name="Id" @bind-Value=@attendeeToUpdate.Id class="w-100" />
+                            <RadzenNumeric style="display: block" Name="Id" @bind-Value=@attendeeToUpdate.Id class="w-100" ShowUpDown="false" />
                             <RadzenNumericRangeValidator Component="Id" Min="1" Max="100" Text="Id should be between 1 and 100" Style="position: absolute" />
                         </div>
                     </div>
