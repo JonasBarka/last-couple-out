@@ -40,4 +40,4 @@ async function onFetch(event) {
         })
     )
 }
-/* Manifest version: wEDOWwES */
+/* Manifest version: qCTJ34Mz */
