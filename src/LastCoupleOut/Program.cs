@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
 using Infrastructure.Repository;
 using Radzen;
+using Append.Blazor.Printing;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -13,6 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddRadzenComponents();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<IPrintingService, PrintingService>();
 
 builder.Services.AddScoped<IAttendeeRepository, AttendeeRepository>();
 builder.Services.AddScoped<IScoreRepository, ScoreRepository>();

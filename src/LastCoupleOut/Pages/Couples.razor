@@ -1,6 +1,8 @@
 ﻿@page "/couples"
 @using Infrastructure.Dto
 @using Infrastructure.Repository
+@using Append.Blazor.Printing
+@inject IPrintingService _printingService
 @inject IScoreRepository _scoreRepository
 @inject IAttendeeRepository _attendeeRepository
 
@@ -12,7 +14,7 @@
     <br />
     <div class="row">
         <div class="col-xxl-6 col-xl-8">
-            <RadzenDataGrid @ref="couplesGrid" Data="@couples" TItem="CoupleDto" AllowSorting="true">
+            <RadzenDataGrid id="couples-grid" @ref="couplesGrid" Data="@couples" TItem="CoupleDto" AllowSorting="true">
                 <Columns>
                     <RadzenDataGridColumn TItem="CoupleDto" Property="CoupleScore" Title="Score" Frozen="true" Width="30px" />
                     <RadzenDataGridColumn TItem="CoupleDto" Property="FirstAttendeeName" Title="First Attendee" Width="60px" />
@@ -21,7 +23,11 @@
                     <RadzenDataGridColumn TItem="CoupleDto" Property="SecondAttendeeScores" Title="Scores" Width="40px" />
                 </Columns>
             </RadzenDataGrid>
-        </div>
+        </div> 
+    </div>
+    <br />
+    <div>
+        <RadzenButton Click=@(_ => OnSubmitPrint()) Text="Print scores" ButtonStyle="ButtonStyle.Primary" Style="width: 150px;" />
     </div>
 </div>
 
@@ -112,5 +118,10 @@
         // Console.WriteLine("Parenting: " + parenting);
 
         return friendship + attraction + parenting;
+    }
+
+    async Task OnSubmitPrint()
+    {
+        await _printingService.Print("couples-grid", PrintType.Html);
     }
 }
