@@ -40,4 +40,4 @@ async function onFetch(event) {
         })
     )
 }
-/* Manifest version: qCTJ34Mz */
+/* Manifest version: QLCiE7eZ */
